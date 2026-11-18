@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  -webkit-tap-highlight-color: transparent;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background: #05070d;
+  color: #e8eef7;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', Inter, system-ui, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* iPhone 底部安全区 */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* 细网格背景 */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(120, 150, 200, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 150, 200, 0.045) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* 面板 */
+.panel {
+  background: linear-gradient(160deg, rgba(20, 29, 51, 0.72), rgba(11, 17, 32, 0.72));
+  border: 1px solid rgba(120, 150, 200, 0.12);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+}
+
+.panel-flat {
+  background: rgba(15, 23, 40, 0.6);
+  border: 1px solid rgba(120, 150, 200, 0.1);
+  border-radius: 12px;
+}
+
+/* 渐变文字 */
+.text-gradient-btc {
+  background: linear-gradient(135deg, #ffc266, #f7931a 60%, #d97706);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 滚动条（桌面） */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(120, 150, 200, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 150, 200, 0.35);
+}
+
+/* 代码块 */
+.code-block {
+  background: rgba(5, 7, 13, 0.8);
+  border: 1px solid rgba(120, 150, 200, 0.12);
+  border-radius: 10px;
+  font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+/* 阅读正文排版 */
+.prose-ba {
+  color: #c9d6e8;
+  line-height: 1.85;
+}
+.prose-ba p {
+  margin: 0.85rem 0;
+}
+.prose-ba strong {
+  color: #f2f6fc;
+  font-weight: 600;
+}
+.prose-ba em {
+  color: #ffc266;
+  font-style: normal;
+}
+.prose-ba ul,
+.prose-ba ol {
+  margin: 0.75rem 0;
+  padding-left: 1.25rem;
+}
+.prose-ba li {
+  margin: 0.4rem 0;
+}
+.prose-ba ul {
+  list-style: disc;
+}
+.prose-ba ol {
+  list-style: decimal;
+}
+.prose-ba code {
+  background: rgba(247, 147, 26, 0.1);
+  color: #ffc266;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+}
+.prose-ba h4 {
+  color: #f2f6fc;
+  font-weight: 600;
+  font-size: 1.02rem;
+  margin: 1.2rem 0 0.5rem;
+}
+
+/* 隐藏数字输入框的上下箭头（金额输入用） */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* 触摸目标最小尺寸 */
+.tap-target {
+  min-height: 44px;
+}
