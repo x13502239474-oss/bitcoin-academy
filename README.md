@@ -102,16 +102,22 @@ npm run preview    # 本地预览构建产物
 
 ## 四、GitHub Pages 部署
 
-本项目使用 GitHub Actions 自动部署到 GitHub Pages。
+**本项目已上线：https://x13502239474-oss.github.io/bitcoin-academy/**
 
-1. 在 GitHub 创建仓库 `bitcoin-academy`（Public）。
-2. 将本项目推送到该仓库的 `main` 分支。
-3. 在仓库 **Settings → Pages → Build and deployment**，Source 选择 **GitHub Actions**。
-4. 工作流文件位于 `.github/workflows/deploy.yml`，推送后自动构建部署。
+采用 **`gh-pages` 分支部署**（源码在 `main`，构建产物在 `gh-pages`），仓库 Settings → Pages 的 Source 为 `gh-pages` 分支根目录。
 
-部署后访问：`https://<用户名>.github.io/bitcoin-academy/`
+发布/更新命令：
 
-工作流关键配置：构建时注入 `VITE_GH_PAGES=1` 使资源路径匹配项目站点子路径；Service Worker 作用域随 base 自动适配。
+```bash
+VITE_GH_PAGES=1 npm run build          # 生成 /bitcoin-academy/ 前缀的产物
+cd dist && touch .nojekyll             # 关闭 Jekyll 处理
+git init -b gh-pages && git add -A && git commit -m deploy
+git push -f origin gh-pages            # 推送后 Pages 自动重建
+```
+
+关键点：构建时 `VITE_GH_PAGES=1` 让资源路径匹配项目站点子路径（`/bitcoin-academy/`），Service Worker 注册路径与作用域随 base 自动适配。
+
+> 若希望改为 **GitHub Actions 自动部署**（每次 push 自动构建），需将 `.github/workflows/deploy.yml` 纳入版本管理；该文件已在本地生成（备份于项目上级目录 `deploy.yml.bak`），但推送它要求 GitHub token 具备 `workflow` 权限。补上该权限后即可启用。
 
 ---
 
