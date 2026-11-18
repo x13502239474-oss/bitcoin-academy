@@ -33,3 +33,6 @@ pnpm-debug.log*
 # 测试临时产物
 *.png.tmp
 chrome-test-profile/
+
+# Actions 工作流需 workflow 权限才能推送，暂缓纳入
+.github/workflows/
