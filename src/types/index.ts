@@ -12,7 +12,7 @@ export type ContentBlock =
   | { type: 'paragraph'; text: string }
   | { type: 'heading'; text: string }
   | { type: 'list'; ordered?: boolean; items: string[] }
-  | { type: 'callout'; tone: 'info' | 'warn' | 'key'; title: string; text: string }
+  | { type: 'callout'; tone: 'info' | 'warn' | 'key' | 'risk'; title: string; text: string }
   | { type: 'code'; text: string; caption?: string }
   | { type: 'table'; headers: string[]; rows: string[][] }
   | { type: 'compare'; title: string; left: { label: string; points: string[] }; right: { label: string; points: string[] } }
@@ -29,12 +29,24 @@ export interface Lesson {
   objectives: string[]
   /** 核心问题（导入） */
   coreQuestion: string
+  /** 本章导读：研究的问题、学习目的与知识背景 */
+  intro?: string
+
   /** 零基础插叙：术语表 */
   terms: Term[]
   /** 知识讲解正文 */
   content: ContentBlock[]
   /** 原理图解：用文字+结构描述的图示（由 VizDiagram 渲染） */
   diagram?: DiagramSpec
+  /** 多张原理图 / 运行流程图（优先于 diagram） */
+  diagrams?: DiagramSpec[]
+  /** 实例演示：用具体数据逐步走一遍 */
+  workedExample?: WorkedExample
+  /** 技术分析：设计优势、局限与安全性 */
+  analysis?: AnalysisPoint[]
+  /** 常见误区（不少于 3 条） */
+  misconceptions?: Misconception[]
+
   /** 关联互动实验 id */
   labId?: string
   /** 重点总结 */
@@ -47,9 +59,38 @@ export interface Lesson {
   asOf?: string
 }
 
+/** 实例演示：场景 + 分步推演 + 结论 */
+export interface WorkedExample {
+  title: string
+  /** 场景设定（谁、多少、为什么） */
+  setup: string
+  /** 分步推演 */
+  steps: { label: string; detail: string }[]
+  /** 可选数据表（字节布局、字段清单等） */
+  table?: { headers: string[]; rows: string[][] }
+  /** 可选命令 / 代码示例 */
+  code?: { text: string; caption?: string }
+  /** 结论：这个例子说明了什么 */
+  conclusion: string
+}
+
+/** 技术分析条目 */
+export interface AnalysisPoint {
+  label: string
+  /** pro=设计优势 con=局限 risk=安全边界 */
+  tone: 'pro' | 'con' | 'risk'
+  text: string
+}
+
+/** 常见误区：错误理解 vs 正确理解 */
+export interface Misconception {
+  wrong: string
+  right: string
+}
+
 /** 结构化图示描述 */
 export interface DiagramSpec {
-  kind: 'flow' | 'layers' | 'cycle' | 'tree'
+  kind: 'flow' | 'layers' | 'cycle' | 'tree' | 'chain' | 'merkle'
   title: string
   nodes: { id: string; label: string; sub?: string; tone?: 'btc' | 'ice' | 'plain' }[]
   /** flow/cycle: [from,to]; layers/tree: 层级分组 */
@@ -87,7 +128,12 @@ export interface Question {
   keywords?: string[][]
   /** 判分阈值（0-1），默认 0.7 */
   threshold?: number
+  /** 简要解析（判分后立即展示） */
   explanation: string
+  /** 详细推导：分步演算、数据代入、验证过程 */
+  derivation?: string
+  /** 易错提醒 */
+  pitfalls?: string
   /** 考查知识点标签（用于掌握度统计与复习） */
   tags: string[]
   difficulty: 1 | 2 | 3

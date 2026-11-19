@@ -36,3 +36,6 @@ chrome-test-profile/
 
 # Actions 工作流需 workflow 权限才能推送，暂缓纳入
 .github/workflows/
+
+# 校验临时产物
+.tmp-validate.mjs

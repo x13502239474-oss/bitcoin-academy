@@ -56,7 +56,7 @@ export function KnowledgeMapPage({ onOpenLesson, onOpenLab }: Props) {
           {/* 关系图 */}
           <div className="panel overflow-hidden p-3">
             {/* 连线层与节点层共用同一坐标容器 */}
-            <div className="relative" style={{ height: 460 }}>
+            <div className="relative" style={{ height: 520 }}>
             <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
               <defs>
                 <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">

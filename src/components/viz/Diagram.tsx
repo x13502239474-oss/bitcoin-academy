@@ -60,6 +60,81 @@ function LayersDiagram({ spec }: { spec: DiagramSpec }) {
   )
 }
 
+/**
+ * 区块链接图：竖向堆叠区块卡片，卡片内的 prev_hash 指针用「链路条」显式连到上一个区块
+ * 用于「区块头如何指向前一区块」「链式结构为什么不可篡改」这类讲解
+ */
+function ChainDiagram({ spec }: { spec: DiagramSpec }) {
+  return (
+    <div className="space-y-0">
+      {spec.nodes.map((n, i) => (
+        <div key={n.id}>
+          <div className="overflow-hidden rounded-xl border border-white/12 bg-black/25">
+            <div className="flex items-center gap-2 border-b border-white/8 bg-white/4 px-3 py-1.5">
+              <span className={`text-xs font-semibold ${n.tone === 'btc' ? 'text-btc-300' : n.tone === 'ice' ? 'text-ice-300' : 'text-mist-200'}`}>{n.label}</span>
+            </div>
+            {n.sub && <div className="px-3 py-2 font-mono text-[10px] leading-relaxed text-mist-400">{n.sub}</div>}
+          </div>
+          {i < spec.nodes.length - 1 && (
+            <div className="flex items-center gap-1.5 py-1 pl-3">
+              <div className="h-3.5 w-px bg-white/20" />
+              <span className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[9px] text-mist-500">prev_hash 指向下方的前一个区块头</span>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/**
+ * Merkle 树：按 groups 从上到下（根 → 叶子）逐层展示，每层标注层级含义
+ * 用于「Merkle Root 如何把一笔交易锁进区块头」
+ */
+function MerkleDiagram({ spec }: { spec: DiagramSpec }) {
+  const groups = spec.groups ?? [{ label: '', nodeIds: spec.nodes.map((n) => n.id) }]
+  return (
+    <div className="space-y-2">
+      {groups.map((g, gi) => (
+        <div key={gi}>
+          {g.label && <div className="mb-1 text-[10px] font-semibold tracking-wider text-mist-500">{g.label}</div>}
+          <div className="flex flex-wrap justify-center gap-1.5">
+            {g.nodeIds.map((id) => {
+              const n = spec.nodes.find((x) => x.id === id)
+              if (!n) return null
+              return (
+                <div key={id} className={`min-w-0 flex-1 rounded-lg border px-1.5 py-1.5 text-center ${toneStyle[n.tone ?? 'plain']}`}>
+                  <div className="truncate font-mono text-[9px] leading-tight">{n.label}</div>
+                  {n.sub && <div className="mt-0.5 truncate text-[9px] opacity-60">{n.sub}</div>}
+                </div>
+              )
+            })}
+          </div>
+          {gi < groups.length - 1 && (
+            <div className="mt-1 flex justify-center">
+              <span className="font-mono text-[10px] text-mist-600">↑ HASH256(左 ‖ 右)</span>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function DiagramBody({ spec }: { spec: DiagramSpec }) {
+  switch (spec.kind) {
+    case 'layers':
+    case 'tree':
+      return <LayersDiagram spec={spec} />
+    case 'chain':
+      return <ChainDiagram spec={spec} />
+    case 'merkle':
+      return <MerkleDiagram spec={spec} />
+    default:
+      return <FlowDiagram spec={spec} />
+  }
+}
+
 export function Diagram({ spec }: { spec: DiagramSpec }) {
   return (
     <div className="panel p-4">
@@ -67,7 +142,7 @@ export function Diagram({ spec }: { spec: DiagramSpec }) {
         <span className="h-1.5 w-1.5 rounded-full bg-btc-500" />
         <div className="text-xs font-semibold tracking-wide text-mist-200">{spec.title}</div>
       </div>
-      {spec.kind === 'layers' || spec.kind === 'tree' ? <LayersDiagram spec={spec} /> : <FlowDiagram spec={spec} />}
+      <DiagramBody spec={spec} />
       {spec.caption && <p className="mt-3 text-[10px] leading-relaxed text-mist-500">{spec.caption}</p>}
     </div>
   )

@@ -13,6 +13,21 @@ export default defineConfig(({ mode }) => {
       outDir: 'dist',
       sourcemap: false,
       chunkSizeWarningLimit: 700,
+      // 课程内容体积较大，拆成独立 chunk：框架代码缓存稳定，
+      // 课程更新时用户只需重新下载数据块；多文件并行下载也利于手机端首屏。
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (!id.includes('node_modules')) {
+              if (id.includes('/src/data/')) return 'course-data'
+              return
+            }
+            if (id.includes('lucide-react')) return 'icons'
+            if (id.includes('react') || id.includes('scheduler')) return 'react-vendor'
+            return
+          },
+        },
+      },
     },
   }
 })

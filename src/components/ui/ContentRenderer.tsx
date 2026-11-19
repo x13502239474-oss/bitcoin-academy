@@ -4,6 +4,7 @@ const toneMap = {
   info: { border: 'border-ice-400/30', bg: 'bg-ice-400/8', label: 'text-ice-300', tag: '说明' },
   warn: { border: 'border-amber-400/30', bg: 'bg-amber-400/8', label: 'text-amber-300', tag: '注意' },
   key: { border: 'border-btc-500/30', bg: 'bg-btc-500/8', label: 'text-btc-300', tag: '要点' },
+  risk: { border: 'border-rose-400/30', bg: 'bg-rose-400/8', label: 'text-rose-300', tag: '风险' },
 }
 
 /** 渲染可能含 <em>/<strong>/<code> 的富文本片段（受控标签，安全） */

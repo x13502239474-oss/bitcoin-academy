@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "tsc --noEmit -p tsconfig.app.json && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit -p tsconfig.app.json"
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
+    "verify:courses": "esbuild scripts/validate-courses.mjs --bundle --format=esm --platform=node --outfile=.tmp-validate.mjs --log-level=error && node .tmp-validate.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
