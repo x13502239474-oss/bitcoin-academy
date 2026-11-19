@@ -1,5 +1,5 @@
 /* Bitcoin Academy Service Worker —— 离线缓存课程与资源 */
-const CACHE = 'bitcoin-academy-v1'
+const CACHE = 'bitcoin-academy-v2'
 
 // 安装时缓存应用外壳
 self.addEventListener('install', (event) => {
